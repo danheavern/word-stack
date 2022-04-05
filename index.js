@@ -30,7 +30,7 @@ app.get('/word', (req,res) => {
 
 app.use(express.static('style'))
 app.use(express.static('scripts'))
-app.use(express.static('images'))
+app.use(express.static('./images/favicon.ico'))
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
