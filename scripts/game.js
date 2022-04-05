@@ -66,7 +66,7 @@ let rowCount = 0;
 // the current word to be guessed - change this every day / every new game
 let word;
 
-axios.get('http://localhost:3000/word')
+axios.get('/word')
 .then(res => {
     word = res.data.toUpperCase();
 })
