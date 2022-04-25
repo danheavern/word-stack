@@ -1,5 +1,18 @@
-const SCREEN_HEIGHT = 500;
-const SCREEN_WIDTH = 300;
+const SCREEN_HEIGHT = window.screen.height;
+let SCREEN_WIDTH = window.screen.width;
+
+if (SCREEN_WIDTH > SCREEN_HEIGHT) {
+    const screen = document.getElementById('game-screen');
+    screen.classList.add('game-screen-landscape');
+    SCREEN_WIDTH = SCREEN_WIDTH / 2;
+}
+
+const BLOCK_HEIGHT = 52;
+
+// Collision constants - adjust to get collision timing right
+const COLLISION_MAX = SCREEN_HEIGHT * 0.85;
+const COLLISION_MIN = COLLISION_MAX - BLOCK_HEIGHT;
+
 const LETTERS = [
     'A',
     'B',
@@ -29,20 +42,17 @@ const LETTERS = [
     'Z'
 ];
 const SLIDER_LEFT_MIN = 10;
-const SLIDER_LEFT_MAX = 245;
+const SLIDER_LEFT_MAX = SCREEN_WIDTH - 75;
 const SLIDER_MOVE_SPEED = 3;
-const ROW_HEIGHT = 65;
+const ROW_HEIGHT = SCREEN_HEIGHT / 10;
 const COL_WIDTH = SCREEN_WIDTH / 4;
 const TPS = 60;
 const TICK_INTERVAL_MS = 1000 / TPS;
 const FALL_SPEED = 1.5;
 const DEFAULT_SCREEN_COLOR = "rgb(48, 43, 43)";
 
-// Collision constants - adjust to get collision timing right
-const COLLISION_MIN = 360;
-const COLLISION_MAX = 380;
 
-const BLOCK_HEIGHT = 37;
+
 
 // colors
 const GRAY = "rgb(150,150,150)";
@@ -73,6 +83,9 @@ axios.get('/word')
 .catch(err => {
     console.log(err)
 })
+
+
+
 
 registerEventListeners();
 
@@ -108,9 +121,6 @@ function tick() {
     }
 }
 
-function getTodaysWord() {
-
-}
 
 function updateClock(gameClock) {
     const clock = document.getElementById('clock');
@@ -440,16 +450,14 @@ function needLetter(letter) {
 
 function wordComplete() {
     const letters = blocks.map(b => b.text)
-    let copy = word
     let count = 0;
 
-    while (letters.length) {
-        letter = letters.pop()
-        if (copy.includes(letter)) {
+    for (let i = 0; i < word.length; i++) {
+        if (letters.includes(word[i])) {
+            // remove from letters
+            letters.splice(letters.indexOf(word[i]), 1)
+            // add to count
             count++
-            // remove letter from word
-            const i = copy.indexOf(letter)
-            copy.replace(letter,'')
         }
     }
 
@@ -473,16 +481,32 @@ function registerEventListeners() {
     document.getElementById('left-button').addEventListener('mousedown', () => {
         leftButtonDown = true;
     });
+
+    document.getElementById('left-button').addEventListener('touchstart', () => {
+        leftButtonDown = true;
+    });
     
     document.getElementById('left-button').addEventListener('mouseup', () => {
+        leftButtonDown = false;
+    });
+
+    document.getElementById('left-button').addEventListener('touchend', () => {
         leftButtonDown = false;
     });
     
     document.getElementById('right-button').addEventListener('mousedown', () => {
         rightButtonDown = true;
     });
+
+    document.getElementById('right-button').addEventListener('touchstart', () => {
+        rightButtonDown = true;
+    });
     
     document.getElementById('right-button').addEventListener('mouseup', () => {
+        rightButtonDown = false;
+    });
+
+    document.getElementById('right-button').addEventListener('touchend', () => {
         rightButtonDown = false;
     });
 
