@@ -114,6 +114,7 @@ button:hover {
   height: 15%;
   background-color: rgba(240, 240, 240, 0.75);
   display: flex;
+  z-index: 99;
 }
 
 .slider {
