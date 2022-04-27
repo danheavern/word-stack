@@ -138,7 +138,8 @@ button:hover {
 }
 
 .left-button,
-.right-button {
+.right-button,
+.button {
   z-index: 2;
 }
 
