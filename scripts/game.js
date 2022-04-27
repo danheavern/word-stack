@@ -478,36 +478,52 @@ function setGameOver() {
 }
 
 function registerEventListeners() {
-    document.getElementById('left-button').addEventListener('mousedown', () => {
+    document.getElementById('left-button').addEventListener('mousedown', (this, e) => {
+        e.preventDefault();
+        e.stopPropagation();
         leftButtonDown = true;
     });
 
-    document.getElementById('left-button').addEventListener('touchstart', () => {
+    document.getElementById('left-button').addEventListener('touchstart', (this, e) => {
         leftButtonDown = true;
+        e.preventDefault();
+        e.stopPropagation();
     });
     
-    document.getElementById('left-button').addEventListener('mouseup', () => {
+    document.getElementById('left-button').addEventListener('mouseup', (this, e) => {
         leftButtonDown = false;
+        e.preventDefault();
+        e.stopPropagation();
     });
 
-    document.getElementById('left-button').addEventListener('touchend', () => {
+    document.getElementById('left-button').addEventListener('touchend', (this, e) => {
         leftButtonDown = false;
+        e.preventDefault();
+        e.stopPropagation();
     });
     
-    document.getElementById('right-button').addEventListener('mousedown', () => {
+    document.getElementById('right-button').addEventListener('mousedown', (this, e) => {
         rightButtonDown = true;
+        e.preventDefault();
+        e.stopPropagation();
     });
 
-    document.getElementById('right-button').addEventListener('touchstart', () => {
+    document.getElementById('right-button').addEventListener('touchstart', (this, e) => {
         rightButtonDown = true;
+        e.preventDefault();
+        e.stopPropagation();
     });
     
-    document.getElementById('right-button').addEventListener('mouseup', () => {
+    document.getElementById('right-button').addEventListener('mouseup', (this, e) => {
         rightButtonDown = false;
+        e.preventDefault();
+        e.stopPropagation();
     });
 
-    document.getElementById('right-button').addEventListener('touchend', () => {
+    document.getElementById('right-button').addEventListener('touchend', (this, e) => {
         rightButtonDown = false;
+        e.preventDefault();
+        e.stopPropagation();
     });
 
     document.addEventListener('keydown', (e) => {
