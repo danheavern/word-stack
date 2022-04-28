@@ -4,14 +4,10 @@ let SCREEN_WIDTH = window.screen.width;
 if (SCREEN_WIDTH > SCREEN_HEIGHT) {
     const screen = document.getElementById('game-screen');
     screen.classList.add('game-screen-landscape');
-    SCREEN_WIDTH = SCREEN_WIDTH / 2;
+    SCREEN_WIDTH = SCREEN_WIDTH / 3;
 }
 
 const BLOCK_HEIGHT = 52;
-
-// Collision constants - adjust to get collision timing right
-const COLLISION_MAX = SCREEN_HEIGHT * 0.85;
-const COLLISION_MIN = COLLISION_MAX - BLOCK_HEIGHT;
 
 const LETTERS = [
     'A',
@@ -51,7 +47,9 @@ const TICK_INTERVAL_MS = 1000 / TPS;
 const FALL_SPEED = 1.5;
 const DEFAULT_SCREEN_COLOR = "rgb(48, 43, 43)";
 
-
+// Collision constants - adjust to get collision timing right
+const COLLISION_MAX = (SCREEN_HEIGHT * 0.85) - (2 * ROW_HEIGHT) + (BLOCK_HEIGHT / 2);
+const COLLISION_MIN = COLLISION_MAX - BLOCK_HEIGHT;
 
 
 // colors
@@ -139,9 +137,9 @@ function formatTime(gameClock) {
 function moveRows(num) {
     for (i = 0; i < rows.length; i++) {
         const row = rows[i];
-        const topVal = -ROW_HEIGHT + num
-        row.element.style.top = topVal;
-        row.yPos = ROW_HEIGHT * i + topVal
+        const y = (ROW_HEIGHT * i) - ROW_HEIGHT + num;
+        row.yPos = y
+        row.element.style.top = y;
 
         if (!row.collided && rowCollision(row)){
             if (charCollision(row)) {
@@ -177,7 +175,7 @@ function insertBlock(block) {
     const slider = document.getElementById('slider');
     slider.insertAdjacentElement('beforeend', block.element);
     stackHeight += BLOCK_HEIGHT;
-    if (blocks.length > 10) {
+    if (blocks.length > 9) {
         // You lose
         setGameOver();
     }

@@ -42,13 +42,13 @@ p {
 }
 
 .game-screen-landscape {
-  width: 50%;
+  width: 33%;
 }
 
 .game-row {
   display: flex;
   flex-direction: row;
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 10%;
   border-radius: 15px;
