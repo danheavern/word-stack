@@ -48,8 +48,8 @@ const FALL_SPEED = 1.5;
 const DEFAULT_SCREEN_COLOR = "rgb(48, 43, 43)";
 
 // Collision constants - adjust to get collision timing right
-const COLLISION_MAX = (SCREEN_HEIGHT * 0.85) - (2 * ROW_HEIGHT) + (BLOCK_HEIGHT / 2);
-const COLLISION_MIN = COLLISION_MAX - BLOCK_HEIGHT;
+const COLLISION_MAX = (SCREEN_HEIGHT * 0.85) - (2 * ROW_HEIGHT) + (BLOCK_HEIGHT / 4);
+const COLLISION_MIN = COLLISION_MAX - (BLOCK_HEIGHT / 2);
 
 
 // colors
@@ -230,11 +230,11 @@ function removeLetter(row) {
 
 function popBlock(row) {
     if (blocks.length) {
-        stackHeight -= BLOCK_HEIGHT;
         removeLetter(row);
         const block = blocks.pop();
         block.element.classList.add('animate__zoomOut');
         setTimeout(() => {
+            stackHeight -= BLOCK_HEIGHT;
             block.element.remove();
             removeLetterFromTop(block.text);
         }, 500);
