@@ -531,7 +531,7 @@ function registerEventListeners() {
     // });
 
     document.getElementById('bottom-bar').addEventListener('touchmove', (ev) => {
-        
+        ev.preventDefault();
         const slider = document.getElementById('slider');
         const newLeft = Math.min(Math.max(ev.touches[0].clientX - 35, SLIDER_LEFT_MIN), SLIDER_LEFT_MAX)
         slider.style.left = newLeft;
