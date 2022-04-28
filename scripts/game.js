@@ -1,5 +1,5 @@
-const SCREEN_HEIGHT = window.screen.height;
-let SCREEN_WIDTH = window.screen.width;
+const SCREEN_HEIGHT = window.innerHeight;
+let SCREEN_WIDTH = window.innerWidth;
 
 if (SCREEN_WIDTH > SCREEN_HEIGHT) {
     const screen = document.getElementById('game-screen');
@@ -39,16 +39,17 @@ const LETTERS = [
 ];
 const SLIDER_LEFT_MIN = 10;
 const SLIDER_LEFT_MAX = SCREEN_WIDTH - 75;
+const SLIDER_WIDTH = 70;
 const SLIDER_MOVE_SPEED = 3;
-const ROW_HEIGHT = SCREEN_HEIGHT / 10;
+const ROW_HEIGHT = Math.max(SCREEN_HEIGHT / 10, 80);
 const COL_WIDTH = SCREEN_WIDTH / 4;
 const TPS = 60;
 const TICK_INTERVAL_MS = 1000 / TPS;
-const FALL_SPEED = 1.5;
+const FALL_SPEED = 1.2;
 const DEFAULT_SCREEN_COLOR = "rgb(48, 43, 43)";
 
 // Collision constants - adjust to get collision timing right
-const COLLISION_MAX = (SCREEN_HEIGHT * 0.85) - (2 * ROW_HEIGHT) + (BLOCK_HEIGHT / 4);
+const COLLISION_MAX = (SCREEN_HEIGHT * 0.85) - (BLOCK_HEIGHT / 2);
 const COLLISION_MIN = COLLISION_MAX - (BLOCK_HEIGHT / 2);
 
 
@@ -64,6 +65,7 @@ let gameOver = false;
 let victory = false;
 let leftButtonDown = false;
 let rightButtonDown = false;
+let fingerDown = false;
 let sliderPos = 100;
 let stackHeight = 0;
 let totalBlocks = 0;
@@ -231,13 +233,13 @@ function removeLetter(row) {
 function popBlock(row) {
     if (blocks.length) {
         removeLetter(row);
+        stackHeight -= BLOCK_HEIGHT;
         const block = blocks.pop();
         block.element.classList.add('animate__zoomOut');
         setTimeout(() => {
-            stackHeight -= BLOCK_HEIGHT;
             block.element.remove();
             removeLetterFromTop(block.text);
-        }, 500);
+        }, 250);
     }
 }
 
@@ -250,8 +252,9 @@ function charCollision(row) {
     if (!row.hasText) {
         return false;
     } else {
-        const collisionMin = COL_WIDTH * row.textIndex -10;
-        return sliderPos >= collisionMin && sliderPos <= (collisionMin + 40);
+        const collisionCenter = (COL_WIDTH * row.textIndex) + (COL_WIDTH / 2) - (SLIDER_WIDTH / 2);
+        const margin = SLIDER_WIDTH / 3;
+        return sliderPos >= (collisionCenter - margin) && sliderPos <= (collisionCenter + margin);
     }
 }
 
@@ -260,14 +263,16 @@ function moveSlider(l, r) {
     const left = sliderPos;
     let newPos = sliderPos;
 
-    if (l && !r) {
+    if (l) {
         newPos = Math.max(SLIDER_LEFT_MIN, left - SLIDER_MOVE_SPEED);
-    } else if (r && !l) {
+    }
+    if (r) {
         newPos = Math.min(SLIDER_LEFT_MAX, left + SLIDER_MOVE_SPEED);
     }
-
-    slider.style.left = newPos.toString() + 'px';
-    sliderPos = newPos;
+    if (l || r) {
+        slider.style.left = newPos.toString() + 'px';
+        sliderPos = newPos;
+    }   
 }
 
 function createGameRow() {
@@ -384,19 +389,20 @@ function reset() {
 
 function start() {
     running = true;
-    const button = document.getElementById('button');
-    button.innerText = 'STOP';
+    document.getElementById('start-screen').style.display = 'none';
+    // const button = document.getElementById('button');
+    // button.innerText = 'STOP';
 }
 
-function stop() {
+function stopGame() {
     running = false;
-    const button = document.getElementById('button');
-    button.innerText = 'START';
+    // const button = document.getElementById('button');
+    // button.innerText = 'START';
 }
 
 function toggleGameState() {
     if (running) {
-        stop();
+        stopGame();
     } else {
         start();
     }
@@ -476,55 +482,66 @@ function setGameOver() {
 }
 
 function registerEventListeners() {
-    document.getElementById('left-button').addEventListener('mousedown', (el, e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        leftButtonDown = true;
-    });
+    // document.getElementById('left-button').addEventListener('mousedown', (el, e) => {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     leftButtonDown = true;
+    // });
 
-    document.getElementById('left-button').addEventListener('touchstart', (el, e) => {
-        leftButtonDown = true;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('left-button').addEventListener('touchstart', (el, e) => {
+    //     leftButtonDown = true;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
     
-    document.getElementById('left-button').addEventListener('mouseup', (el, e) => {
-        leftButtonDown = false;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('left-button').addEventListener('mouseup', (el, e) => {
+    //     leftButtonDown = false;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
 
-    document.getElementById('left-button').addEventListener('touchend', (el, e) => {
-        leftButtonDown = false;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('left-button').addEventListener('touchend', (el, e) => {
+    //     leftButtonDown = false;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
     
-    document.getElementById('right-button').addEventListener('mousedown', (el, e) => {
-        rightButtonDown = true;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('right-button').addEventListener('mousedown', (el, e) => {
+    //     rightButtonDown = true;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
 
-    document.getElementById('right-button').addEventListener('touchstart', (el, e) => {
-        rightButtonDown = true;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('right-button').addEventListener('touchstart', (el, e) => {
+    //     rightButtonDown = true;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
     
-    document.getElementById('right-button').addEventListener('mouseup', (el, e) => {
-        rightButtonDown = false;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('right-button').addEventListener('mouseup', (el, e) => {
+    //     rightButtonDown = false;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
 
-    document.getElementById('right-button').addEventListener('touchend', (el, e) => {
-        rightButtonDown = false;
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // document.getElementById('right-button').addEventListener('touchend', (el, e) => {
+    //     rightButtonDown = false;
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
+
+    document.getElementById('bottom-bar').addEventListener('touchmove', (ev) => {
+        
+        const slider = document.getElementById('slider');
+        const newLeft = Math.min(Math.max(ev.touches[0].clientX - 35, SLIDER_LEFT_MIN), SLIDER_LEFT_MAX)
+        slider.style.left = newLeft;
+        sliderPos = newLeft;
+    })
 
     document.addEventListener('keydown', (e) => {
+        if (e.code == 'Space') {
+            toggleGameState();
+        }
         if (e.code == 'KeyA') {
             leftButtonDown = true;
         }

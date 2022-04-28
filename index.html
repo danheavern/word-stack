@@ -26,16 +26,19 @@
                         <p id="clock">00:00</p>
                     </div>
                 </div>
-                <div class="bottom-bar">
+                <div id="start-screen" class="start-screen">
+                    <h1 onclick="start()">START</h1>
+                </div>
+                <div id="bottom-bar" class="bottom-bar">
                     <div id="slider" class="slider shadow">
                     </div>
-                    <button id="left-button" class="nav-toggle left-button shadow"></button>
-                    <button id="right-button" class="nav-toggle right-button shadow"></button>
+                    <!-- <button id="left-button" class="nav-toggle left-button shadow"></button>
+                    <button id="right-button" class="nav-toggle right-button shadow"></button> -->
                 </div>
             </div>
             <div class="button">
-                <button id="button" onclick="toggleGameState()">START</button>
-                <button onclick="reset()">RESET</button>
+                <!-- <button id="button" onclick="toggleGameState()">START</button>
+                <button onclick="reset()">RESET</button> -->
             </div>
         </div>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
