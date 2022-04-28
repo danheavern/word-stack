@@ -45,7 +45,7 @@ const ROW_HEIGHT = Math.max(SCREEN_HEIGHT / 10, 80);
 const COL_WIDTH = SCREEN_WIDTH / 4;
 const TPS = 60;
 const TICK_INTERVAL_MS = 1000 / TPS;
-const FALL_SPEED = 1.2;
+const FALL_SPEED = 1.7;
 const DEFAULT_SCREEN_COLOR = "rgb(48, 43, 43)";
 
 // Collision constants - adjust to get collision timing right
