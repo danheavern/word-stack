@@ -29,16 +29,20 @@
                 <div id="start-screen" class="start-screen">
                     <h1 onclick="start()">START</h1>
                 </div>
+                <div class="game-over">
+                    <h1 id="victory-message" class="victory-message">VICTORY!</h1>
+                    <h1 id="game-over-text" class="game-over-text">GAME OVER</h1>
+                    <p id="victory-details" class="victory-details"></p>
+                    <div id="options" class="options">
+                        <p class="option" onclick="restart()">restart</p>
+                        <p class="option" onclick="playRandom()">random</p>
+                    </div>
+                </div>
+                
                 <div id="bottom-bar" class="bottom-bar">
                     <div id="slider" class="slider shadow">
                     </div>
-                    <!-- <button id="left-button" class="nav-toggle left-button shadow"></button>
-                    <button id="right-button" class="nav-toggle right-button shadow"></button> -->
                 </div>
-            </div>
-            <div class="button">
-                <!-- <button id="button" onclick="toggleGameState()">START</button>
-                <button onclick="reset()">RESET</button> -->
             </div>
         </div>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

@@ -28,6 +28,19 @@ app.get('/word', (req,res) => {
     })
 })
 
+app.get('/random', (req, res) => {
+    res.writeHead(200, { 'content-type': 'text/plain' })
+    fs.readFile('./assets/shuffled.txt', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+        const arr = data.split(',');
+        const rand = Math.floor(Math.random() * arr.length);
+        res.end(arr[rand])
+    })
+})
+
 app.use(express.static('style'))
 app.use(express.static('scripts'))
 app.use(express.static('images'))
@@ -37,7 +50,7 @@ app.listen(port, () => {
 })
 
 function getDayIndex() {
-    const start = moment('20220405', 'YYYYMMDD')
+    const start = moment('20220405 00:00', 'YYYYMMDD HH:mm')
     const today = moment()
     return today.diff(start, 'days')
 }

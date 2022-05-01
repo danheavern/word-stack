@@ -84,9 +84,6 @@ axios.get('/word')
     console.log(err)
 })
 
-
-
-
 registerEventListeners();
 
 setInterval(() => {
@@ -95,6 +92,18 @@ setInterval(() => {
         tick();
     }
 }, TICK_INTERVAL_MS);
+
+function playRandom() {
+    reset()
+    axios.get('/random')
+    .then(res => {
+        word = res.data.toUpperCase();
+        start();
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
 
 function tick() {
     const ticksBetweenRows = TPS / FALL_SPEED;
@@ -211,19 +220,12 @@ function removeLetterFromTop(letter) {
 function setGameOverVictory() {
     gameOver = true;
     victory = true;
-    const div = document.createElement('div');
-    const h1 = document.createElement('h1');
-    const p = document.createElement('p');
-    div.id = 'victory';
-    div.classList.add('game-over-victory');
-    h1.classList.add('victory-message');
-    p.classList.add('victory-details');
-
-    h1.innerText = 'VICTORY!';
+    const h1 = document.getElementById('victory-message');
+    const p = document.getElementById('victory-details');
+    h1.style.display = 'flex';
     p.innerText = totalBlocks + ' BLOCKS IN ' + formatTime(gameClock);
-    div.insertAdjacentElement('beforeend', h1);
-    div.insertAdjacentElement('beforeend', p);
-    document.getElementById('game-screen').insertAdjacentElement('beforeend', div);
+    document.getElementById('options').style.display = 'flex'
+
 }
 
 function removeLetter(row) {
@@ -353,8 +355,10 @@ function randomLetter() {
 
 function reset() {
     // set default values
-    stop();
+    stopGame();
     gameClock = 0;
+    gameOver = false;
+    victory = false;
     updateClock(gameClock);
     while (rows.length) {
         const row = rows.pop();
@@ -368,23 +372,19 @@ function reset() {
     gameClock = 0;
     totalBlocks = 0;
 
-    if (gameOver) {
-        const el = document.getElementById('game-over');
-        if (el) {
-            el.remove();
-            gameOver = false;
-        } 
-    }
-
-    if (victory) {
-        const el = document.getElementById('victory');
-        el.remove();
-        victory = false;
-    }
-
+    document.getElementById('options').style.display = 'none'
+    document.getElementById('victory-message').style.display = 'none'
+    document.getElementById('game-over-text').style.display = 'none'
+    document.getElementById('victory-details').innerText = ''
+    
     // remove letters on top of screen
     const letters = Array.from(document.getElementById('letters').children)
     letters.forEach(letter => letter.children.item(0) ? letter.children.item(0).remove() : null)
+}
+
+function restart() {
+    reset()
+    start()
 }
 
 function start() {
@@ -469,66 +469,12 @@ function wordComplete() {
 }
 
 function setGameOver() {
-    gameOver = true;
-    const text = document.createElement('h1');
-    text.className = 'game-over-text';
-    text.innerText = 'GAME OVER';
-    const div = document.createElement('div');
-    div.className = 'game-over';
-    div.id = 'game-over';
-    div.insertAdjacentElement('afterbegin', text);
-    const gameScreen = document.getElementById('game-screen');
-    gameScreen.insertAdjacentElement('beforeend', div);
+    gameOver = true
+    document.getElementById('game-over-text').style.display = 'flex'
+    document.getElementById('options').style.display = 'flex'
 }
 
 function registerEventListeners() {
-    // document.getElementById('left-button').addEventListener('mousedown', (el, e) => {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     leftButtonDown = true;
-    // });
-
-    // document.getElementById('left-button').addEventListener('touchstart', (el, e) => {
-    //     leftButtonDown = true;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
-    
-    // document.getElementById('left-button').addEventListener('mouseup', (el, e) => {
-    //     leftButtonDown = false;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
-
-    // document.getElementById('left-button').addEventListener('touchend', (el, e) => {
-    //     leftButtonDown = false;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
-    
-    // document.getElementById('right-button').addEventListener('mousedown', (el, e) => {
-    //     rightButtonDown = true;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
-
-    // document.getElementById('right-button').addEventListener('touchstart', (el, e) => {
-    //     rightButtonDown = true;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
-    
-    // document.getElementById('right-button').addEventListener('mouseup', (el, e) => {
-    //     rightButtonDown = false;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
-
-    // document.getElementById('right-button').addEventListener('touchend', (el, e) => {
-    //     rightButtonDown = false;
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    // });
 
     document.getElementById('bottom-bar').addEventListener('touchmove', (ev) => {
         ev.preventDefault();
