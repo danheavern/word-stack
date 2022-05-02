@@ -2,6 +2,7 @@
     <head>
         <title>Word Game</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -12,10 +13,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div class="container">
-            <div id="game-screen" class="game-screen">
-                <div class="top-bar">
-                    <div id="letters" class="letters">
+        <div class="container d-flex w-100 h-100">
+            <div id="game-screen" class="game-screen position-absolute w-lg-33 w-100 h-100">
+                <div class="top-bar d-flex w-100 position-absolute">
+                    <div id="letters" class="letters d-flex">
                         <div class="space"></div>
                         <div class="space"></div>
                         <div class="space"></div>
@@ -26,21 +27,21 @@
                         <p id="clock">00:00</p>
                     </div>
                 </div>
-                <div id="start-screen" class="start-screen">
+                <div id="start-screen" class="start-screen d-flex w-100 position-absolute">
                     <h1 onclick="start()">START</h1>
                 </div>
-                <div class="game-over">
+                <div id="game-over" class="game-over d-none w-100 position-absolute">
                     <h1 id="victory-message" class="victory-message">VICTORY!</h1>
                     <h1 id="game-over-text" class="game-over-text">GAME OVER</h1>
                     <p id="victory-details" class="victory-details"></p>
-                    <div id="options" class="options">
-                        <p class="option" onclick="restart()">restart</p>
-                        <p class="option" onclick="playRandom()">random</p>
+                    <div id="options" class="options w-100 d-flex">
+                        <button class="btn-lg p-10 option" onclick="restart()">restart</button>
+                        <button class="btn-lg p-10 option" onclick="playRandom()">random</button>
                     </div>
                 </div>
                 
-                <div id="bottom-bar" class="bottom-bar">
-                    <div id="slider" class="slider shadow">
+                <div id="bottom-bar" class="bottom-bar d-flex w-100 position-absolute">
+                    <div id="slider" class="slider shadow position-absolute">
                     </div>
                 </div>
             </div>
