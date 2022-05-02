@@ -142,6 +142,7 @@ h1 {
 }
 
 .option {
+  color: rgb(40, 40, 40);
   background-color: rgb(233, 232, 232);
   border-radius: 10px;
   border: 2px solid rgb(40, 40, 40);
